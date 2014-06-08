@@ -15,23 +15,16 @@ class stimulate{
     //FILE *fp1, *fp2, *fp3;
     QString state;
 
-    int btot(int h, int t)
-    {
-        long int sum = 0;
-        sum = instru[pc] << h >> (31 - t + h);
-        return sum;
-    }
-
     void decode()
     {
-        op = btot(0, 5);
-        rs = btot(6, 10);
-        rt = btot(11, 15);
-        rd = btot(16, 20);
-        shmt = btot(21, 25);
-        func = btot(26, 31);
-        data = btot(16, 31);
-        addr = btot(6, 31);
+        op = (instru[pc]>>26)&0x3f;
+        rs = (instru[pc]>>21)&0x1f;
+        rt = (instru[pc]>>16)&0x1f;
+        rd = (instru[pc]>>11)&0x1f;
+        shmt = (instru[pc]>>26)&0x3f;
+        func = instru[pc]&0x3f;
+        data = instru[pc]&0xffff;
+        addr = instru[pc]&0x3ffffff;
     }
 
     void Add()
@@ -197,7 +190,7 @@ class stimulate{
 
     void display()
     {
-        state+="\n\nPC=";
+        state+="\n\n\nPC=";
         state+=QString::number(pc*4,10);
         state+="\n";
         for (i = 0; i<32; i++)
@@ -236,7 +229,7 @@ public:
         initialize();
         read(bin);
         state+=QString::number(PCmax,10);
-        state+=" instrus:\n";
+        state+=" instrus:";
         while (pc<PCmax)
         {
             moni();
