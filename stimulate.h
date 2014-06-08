@@ -92,6 +92,8 @@ class stimulate{
     {
         int p;
         p = reg[rs] + data;
+        qDebug()<<rt;
+        qDebug()<<p;
         reg[rt] = Memory[p];
     }
     void Sw()

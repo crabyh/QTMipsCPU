@@ -207,10 +207,28 @@ public:
                 regregreg();
                 instruction=0x00000022|(regist[1]<<21)|(regist[2]<<16)|(regist[0]<<11);
             }
+            else if(!strcmp(operation,"and")){
+                regregreg();
+                instruction=0x00000024|(regist[1]<<21)|(regist[2]<<16)|(regist[0]<<11);
+            }
+            else if(!strcmp(operation,"or")){
+                regregreg();
+                instruction=0x00000025|(regist[1]<<21)|(regist[2]<<16)|(regist[0]<<11);
+            }
+            else if(!strcmp(operation,"nor")){
+                regregreg();
+                instruction=0x00000026|(regist[1]<<21)|(regist[2]<<16)|(regist[0]<<11);
+            }
             else if(!strcmp(operation,"slt")){
                 regregreg();
                 instruction=0x0000002A|(regist[1]<<21)|(regist[2]<<16)|(regist[0]<<11);
             }
+            else if(!strcmp(operation,"jr")){
+                regregreg();
+                instruction=0x00000008|(regist[0]<<21);
+            }
+
+
             else if(!strcmp(operation,"lw")){
                 regimmreg();
                 instruction=0x8C000000|(regist[2]<<21)|(regist[0]<<16);
@@ -221,6 +239,48 @@ public:
                 instruction=0xAC000000|(regist[2]<<21)|(regist[0]<<16);
                 instruction=instruction|(((unsigned long)imm)<<16>>16);
             }
+
+            else if(!strcmp(operation,"addi")){
+                regregimm();
+                instruction=0x20000000|(regist[0]<<21)|(regist[1]<<16);
+                if(type==1)
+                    instruction=instruction|(((unsigned long)imm)<<16>>16);
+                else if(type==0){
+                    //printf("(%x %x %x)",imm,count,(imm-count-1));
+                    instruction=instruction|(((unsigned long)(imm-count-1))<<16>>16);
+                }
+            }
+            else if(!strcmp(operation,"andi")){
+                regregimm();
+                instruction=0x2C000000|(regist[0]<<21)|(regist[1]<<16);
+                if(type==1)
+                    instruction=instruction|(((unsigned long)imm)<<16>>16);
+                else if(type==0){
+                    //printf("(%x %x %x)",imm,count,(imm-count-1));
+                    instruction=instruction|(((unsigned long)(imm-count-1))<<16>>16);
+                }
+            }
+            else if(!strcmp(operation,"ori")){
+                regregimm();
+                instruction=0x34000000|(regist[0]<<21)|(regist[1]<<16);
+                if(type==1)
+                    instruction=instruction|(((unsigned long)imm)<<16>>16);
+                else if(type==0){
+                    //printf("(%x %x %x)",imm,count,(imm-count-1));
+                    instruction=instruction|(((unsigned long)(imm-count-1))<<16>>16);
+                }
+            }
+            else if(!strcmp(operation,"slti")){
+                regregimm();
+                instruction=0x30000000|(regist[0]<<21)|(regist[1]<<16);
+                if(type==1)
+                    instruction=instruction|(((unsigned long)imm)<<16>>16);
+                else if(type==0){
+                    //printf("(%x %x %x)",imm,count,(imm-count-1));
+                    instruction=instruction|(((unsigned long)(imm-count-1))<<16>>16);
+                }
+            }
+
             else if(!strcmp(operation,"beq")){
                 regregimm();
                 instruction=0x10000000|(regist[1]<<21)|(regist[0]<<16);
@@ -230,13 +290,28 @@ public:
                     //printf("(%x %x %x)",imm,count,(imm-count-1));
                     instruction=instruction|(((unsigned long)(imm-count-1))<<16>>16);
                 }
+            }
+            else if(!strcmp(operation,"bne")){
+                regregimm();
+                instruction=0x14000000|(regist[1]<<21)|(regist[0]<<16);
+                if(type==1)
+                    instruction=instruction|(((unsigned long)imm)<<16>>16);
+                else if(type==0){
+                    //printf("(%x %x %x)",imm,count,(imm-count-1));
+                    instruction=instruction|(((unsigned long)(imm-count-1))<<16>>16);
+                }
 
             }
+
             else if(!strcmp(operation,"j")){
                 p=0;
                 getimm();
                 instruction=0x08000000|(((unsigned long)imm)<<6>>6);
-                instruction=0x08000003;
+            }
+            else if(!strcmp(operation,"jal")){
+                p=0;
+                getimm();
+                instruction=0x0C000000|(((unsigned long)imm)<<6>>6);
             }
             else{
                 return QString("error!");
