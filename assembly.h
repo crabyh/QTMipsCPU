@@ -235,10 +235,11 @@ public:
             else if(!strcmp(operation,"j")){
                 p=0;
                 getimm();
-                instruction=0x08000000|(((unsigned long)imm)<<6>>6)-1;
+                instruction=0x08000000|(((unsigned long)imm)<<6>>6);
+                instruction=0x08000003;
             }
             else{
-                printf("ERROR!!!\n");
+                return QString("error!");
                 return 0;
             }
             fwrite(&instruction,4,1,fbi);

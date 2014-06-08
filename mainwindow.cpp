@@ -26,7 +26,7 @@ void MainWindow::on_pushButton_clicked()
 {
     path = QFileDialog::getOpenFileName(this,
     tr("Open File"),
-    "‪C:\Users\myh\Desktop",
+    "‪./",
     tr("Text Files(*.txt)"));
     p=path;
     if(!path.isEmpty()) {
