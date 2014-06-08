@@ -246,7 +246,12 @@ public:
 
             //fprintf(ftext,"%x\n",instruction);
             //printf("%x\n",instruction);
-            ins+=QString::number(instruction,16);
+
+            QString insline = QString::number(instruction,2);
+            int zero=insline.size();
+            for(int j=zero;j<32;j++)
+                insline.prepend("0");
+            ins+=insline;
             ins+='\n';
             count++;
         }

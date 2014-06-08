@@ -177,7 +177,7 @@ class stimulate{
         int i=0;
         while(i<=n){
             QString qline=bin.section('\n',i,i);
-            instru[i]=qline.toULong(&ok,16);
+            instru[i]=qline.toULong(&ok,2);
             i++;
         }
         PCmax = i - 1;
