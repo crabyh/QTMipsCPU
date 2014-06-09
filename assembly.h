@@ -18,7 +18,7 @@ class assembly{
     int p;
     int type;
     QString ins;
-
+    int err = 0;
     struct list{
         char name[10];
         int position;
@@ -74,6 +74,9 @@ class assembly{
                 regist[i]=31;
                 break;
             }
+            default:{
+                err= -1;
+            }
         }
     }
 
@@ -118,6 +121,8 @@ class assembly{
             imm=imm*flag;
             type=1;
         }
+        imm=3;
+        //something wrong with it
     }
 
     void regimmreg()
@@ -314,7 +319,9 @@ public:
                 instruction=0x0C000000|(((unsigned long)imm)<<6>>6);
             }
             else{
-                return QString("error!");
+                if(err!=0)
+                    return QString("Register Wrong!\n");
+                return QString("There are one or more error(s)!\n");
                 return 0;
             }
             fwrite(&instruction,4,1,fbi);

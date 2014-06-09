@@ -74,3 +74,23 @@ void MainWindow::on_pushButton_3_clicked()
     //QString qline=qbin.getline();
 
 }
+
+void MainWindow::on_pushButton_4_clicked()
+{
+    static int y = 0;
+    stimulate s;
+    QString qbin= ui->textEdit_2->toPlainText();
+    QString state=s.start_stimulate(qbin);
+    QString qline=state.section('\n',y*4,y*4);
+    qline+="\n\n";
+    y++;
+    ui->textEdit_3->append(qline);
+}
+
+void MainWindow::on_pushButton_5_clicked()
+{
+    stimulate s;
+    QString qbin= ui->textEdit_2->toPlainText();
+    QString state=s.show_memory(qbin);
+    ui->textEdit_3->append(state);
+}

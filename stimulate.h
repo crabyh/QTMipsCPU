@@ -9,7 +9,7 @@
 #define ISNUM 100
 class stimulate{
     unsigned long instru[ISNUM], Memory[MEMMAX];
-    int i, pc, op, rs, rt, rd, shmt, func, data, flag = 0, PCmax;
+    int i, pc, op, rs, rt, rd, shmt, func, data, flag, PCmax;
     long int addr;
     long reg[32];
     //FILE *fp1, *fp2, *fp3;
@@ -85,8 +85,6 @@ class stimulate{
     {
         int p;
         p = reg[rs] + data;
-        qDebug()<<rt;
-        qDebug()<<p;
         reg[rt] = Memory[p];
     }
     void Sw()
@@ -182,10 +180,23 @@ class stimulate{
 
     void moni()
     {
+        flag = 0;
         decode();
+        qDebug()<<pc;
         exec();
         if (flag == 0) pc++;
-        flag = 0;
+
+    }
+
+    void display_memory()
+    {
+        state+="\n\n\nPC=";
+        state+=QString::number(pc*4,10);
+        state+="\n";
+        for (i = 0; i<32; i++)
+        {
+            state=state+"Memory["+QString::number(i,10)+"]="+QString::number(Memory[i],10)+"\t";
+        }
     }
 
     void display()
@@ -223,6 +234,19 @@ public:
 
     stimulate(){}
     ~stimulate(){}
+    QString show_memory(QString bin){
+        initialize();
+        read(bin);
+        state+=QString::number(PCmax,10);
+        state+=" instrus:";
+        while (pc<PCmax)
+        {
+            moni();
+            display_memory();
+        }
+        return state;
+    }
+
     QString start_stimulate(QString bin)
     {
 
